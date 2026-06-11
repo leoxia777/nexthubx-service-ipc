@@ -131,29 +131,19 @@ jobs:
           target: ${{ matrix.target }}
           features: standalone
 
-      - name: CodeSign macOS binaries
+      - name: CodeSign macOS binaries (ad-hoc)
         if: startsWith(matrix.os, 'macos')
         shell: bash
         run: |
-          echo "${{ secrets.APPLE_CERTIFICATE }}" | base64 --decode > cert.p12
-          security create-keychain -p github-actions github-actions.keychain
-          security default-keychain -s github-actions.keychain
-          security unlock-keychain -p github-actions github-actions.keychain
-          security import cert.p12 -k github-actions.keychain -P "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}" -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k github-actions github-actions.keychain
-
+          # NextHubX fork:无 Apple Developer 证书,改用 ad-hoc 签名(codesign -s -),
+          # 与 NextHubX 应用本身的 adhoc 分发一致;给二进制一个稳定的设计标识,无需任何 secrets。
           for bin in clash-verge-service clash-verge-service-install clash-verge-service-uninstall; do
             file "target/${{ matrix.target }}/release/$bin"
             lipo -info "target/${{ matrix.target }}/release/$bin" || true
-            codesign --force \
-              -s "${{ secrets.APPLE_SIGNING_IDENTITY }}" \
-              --keychain github-actions.keychain \
-              --options runtime \
-              --timestamp \
-              --identifier "io.github.clash-verge-rev.clash-verge-rev-service-ipc" \
+            codesign --force -s - \
+              --identifier "com.nexthubx.app.service" \
               "target/${{ matrix.target }}/release/$bin"
-            codesign -dvv "target/${{ matrix.target }}/release/$bin"
-            codesign -d --entitlements /dev/stdout "target/${{ matrix.target }}/release/$bin"
+            codesign -dvv "target/${{ matrix.target }}/release/$bin" || true
           done
 
       - name: Package Windows binaries
