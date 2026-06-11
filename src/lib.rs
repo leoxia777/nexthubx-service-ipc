@@ -23,9 +23,9 @@ pub use core::{CoreWatchdogTestConfig, set_core_watchdog_config_for_tests};
 pub use client::*;
 
 #[cfg(all(unix, not(feature = "test")))]
-pub static IPC_PATH: &str = "/tmp/verge/clash-verge-service.sock";
+pub static IPC_PATH: &str = "/tmp/nexthubx/nexthubx-service.sock";
 #[cfg(all(windows, not(feature = "test")))]
-pub static IPC_PATH: &str = r"\\.\pipe\clash-verge-service";
+pub static IPC_PATH: &str = r"\\.\pipe\nexthubx-service";
 
 #[cfg(all(feature = "test", unix))]
 pub static IPC_PATH: &str = "/tmp/clash-verge-service-ipc-test/service.sock";

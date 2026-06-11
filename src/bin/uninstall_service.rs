@@ -15,10 +15,10 @@ fn main() -> Result<(), Error> {
     let _ = uninstall_old_service();
     // 定义路径
     let bundle_path =
-        "/Library/PrivilegedHelperTools/io.github.clash-verge-rev.clash-verge-rev.service.bundle";
+        "/Library/PrivilegedHelperTools/com.nexthubx.app.service.bundle";
     let plist_file =
-        "/Library/LaunchDaemons/io.github.clash-verge-rev.clash-verge-rev.service.plist";
-    let service_id = "io.github.clash-verge-rev.clash-verge-rev.service";
+        "/Library/LaunchDaemons/com.nexthubx.app.service.plist";
+    let service_id = "com.nexthubx.app.service";
 
     // 停止并卸载服务
     let _ = run_command("launchctl", &["stop", service_id], debug);
@@ -46,7 +46,7 @@ fn main() -> Result<(), Error> {
 
 #[cfg(target_os = "linux")]
 fn main() -> Result<(), Error> {
-    const SERVICE_NAME: &str = "clash-verge-service";
+    const SERVICE_NAME: &str = "nexthubx-service";
     use std::env;
 
     let debug = env::args().any(|arg| arg == "--debug");
@@ -89,7 +89,7 @@ fn main() -> anyhow::Result<()> {
     let service_manager = ServiceManager::local_computer(None::<&str>, manager_access)?;
 
     let service_access = ServiceAccess::QUERY_STATUS | ServiceAccess::STOP | ServiceAccess::DELETE;
-    let service = service_manager.open_service("clash_verge_service", service_access)?;
+    let service = service_manager.open_service("nexthubx_service", service_access)?;
 
     let service_status = service.query_status()?;
     if service_status.current_state != ServiceState::Stopped {

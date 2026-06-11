@@ -56,7 +56,7 @@ fn main() -> Result<(), Error> {
 
     // 定义 bundle 路径
     let bundle_path =
-        "/Library/PrivilegedHelperTools/io.github.clash-verge-rev.clash-verge-rev.service.bundle";
+        "/Library/PrivilegedHelperTools/com.nexthubx.app.service.bundle";
     let contents_path = format!("{}/Contents", bundle_path);
     let macos_path = format!("{}/MacOS", contents_path);
 
@@ -85,7 +85,7 @@ fn main() -> Result<(), Error> {
 
     // 创建并写入 launchd plist
     let plist_file =
-        "/Library/LaunchDaemons/io.github.clash-verge-rev.clash-verge-rev.service.plist";
+        "/Library/LaunchDaemons/com.nexthubx.app.service.plist";
     let plist_file = Path::new(plist_file);
 
     let launchd_plist_content = format!(
@@ -119,7 +119,7 @@ fn main() -> Result<(), Error> {
         "launchctl",
         &[
             "enable",
-            "system/io.github.clash-verge-rev.clash-verge-rev.service",
+            "system/com.nexthubx.app.service",
         ],
         debug,
     );
@@ -135,7 +135,7 @@ fn main() -> Result<(), Error> {
     );
     let _ = run_command(
         "launchctl",
-        &["start", "io.github.clash-verge-rev.clash-verge-rev.service"],
+        &["start", "com.nexthubx.app.service"],
         debug,
     );
 
@@ -144,7 +144,7 @@ fn main() -> Result<(), Error> {
 
 #[cfg(target_os = "linux")]
 fn main() -> Result<(), Error> {
-    const SERVICE_NAME: &str = "clash-verge-service";
+    const SERVICE_NAME: &str = "nexthubx-service";
     use std::env;
     use std::fs::File;
     use std::io::Write;
@@ -214,7 +214,7 @@ fn main() -> anyhow::Result<()> {
     use std::env;
     use std::ffi::{OsStr, OsString};
 
-    const SERVICE_NAME: &str = "clash_verge_service";
+    const SERVICE_NAME: &str = "nexthubx_service";
 
     let manager_access = ServiceManagerAccess::CONNECT | ServiceManagerAccess::CREATE_SERVICE;
     let service_manager = ServiceManager::local_computer(None::<&str>, manager_access)?;
@@ -248,7 +248,7 @@ fn main() -> anyhow::Result<()> {
 
     let service_info = ServiceInfo {
         name: OsString::from(SERVICE_NAME),
-        display_name: OsString::from("Clash Verge Service"),
+        display_name: OsString::from("NextHubX Service"),
         service_type: ServiceType::OWN_PROCESS,
         start_type: ServiceStartType::AutoStart,
         error_control: ServiceErrorControl::Normal,
@@ -262,7 +262,7 @@ fn main() -> anyhow::Result<()> {
     let start_access = ServiceAccess::CHANGE_CONFIG | ServiceAccess::START;
     let service = service_manager.create_service(&service_info, start_access)?;
 
-    service.set_description("Clash Verge Service helps to launch clash core")?;
+    service.set_description("NextHubX Service helps to launch the core")?;
     configure_windows_service_recovery(&service)?;
     service.start(&Vec::<&OsStr>::new())?;
 

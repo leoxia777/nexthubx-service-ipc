@@ -41,7 +41,7 @@ async fn main() -> Result<()> {
 #[cfg(windows)]
 fn main() -> Result<()> {
     init_logger();
-    if service_dispatcher::start("clash_verge_service", ffi_service_main).is_err() {
+    if service_dispatcher::start("nexthubx_service", ffi_service_main).is_err() {
         info!("Not running as a service, starting in standalone mode.");
         let rt = tokio::runtime::Runtime::new()?;
         rt.block_on(run_standalone())?;
@@ -78,7 +78,7 @@ fn run_service() -> platform_lib::Result<()> {
         }
     };
 
-    let status_handle = service_control_handler::register("clash_verge_service", event_handler)?;
+    let status_handle = service_control_handler::register("nexthubx_service", event_handler)?;
 
     status_handle.set_service_status(ServiceStatus {
         service_type: ServiceType::OWN_PROCESS,

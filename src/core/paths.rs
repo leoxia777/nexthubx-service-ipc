@@ -1,6 +1,6 @@
 use std::path::{Path, PathBuf};
 
-const SERVICE_NAME: &str = "clash-verge-service";
+const SERVICE_NAME: &str = "nexthubx-service";
 
 #[derive(Debug, Clone)]
 pub struct ServicePaths {
@@ -63,7 +63,7 @@ fn runtime_dir() -> PathBuf {
         Path::new(crate::IPC_PATH)
             .parent()
             .map(Path::to_path_buf)
-            .unwrap_or_else(|| PathBuf::from("/tmp/verge"))
+            .unwrap_or_else(|| PathBuf::from("/tmp/nexthubx"))
     }
 
     #[cfg(windows)]
